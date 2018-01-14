@@ -5,6 +5,7 @@ import About from '../About'
 import Home from '../Home'
 import NotFound from '../NotFound'
 import Footer from '../Footer'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 class App extends Component {
   render() {
@@ -15,7 +16,6 @@ class App extends Component {
           <Route path="/about" component={About}/>
           <Route path="*" component={NotFound}/>
         </Switch>
-
         <Footer/>
       </main>
     );
