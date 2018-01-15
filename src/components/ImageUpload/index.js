@@ -15,15 +15,28 @@ class ImageUpload extends Component {
 
   _handleSubmit (e) {
     e.preventDefault()
-    // TODO: do something with -> this.state.file
+    const formData = new FormData()
+    formData.append('image', this.state.file)
+    return fetch('http://localhost:3000/api/image/upload', {
+      method: 'POST',
+      body: formData
+    }).then(response => response.json())
+      .then(json => {
+        if (json.status === 0) {
+          const userSearch = {
+            name: JSON.parse(json.data).name,
+            profile: JSON.parse(json.data).userData
+          }
+          this.props.handleSearchResult(userSearch)
+        }
+      })
   }
 
   _handleImageChange (e) {
     e.preventDefault()
-
-    let reader = new FileReader()
+    const reader = new FileReader()
     if (e.target.files) {
-      let file = e.target.files[0]
+      const file = e.target.files[0]
       reader.onloadend = () => {
         this.setState({
           file: file,
@@ -35,7 +48,7 @@ class ImageUpload extends Component {
   }
 
   render () {
-    let {imagePreviewUrl} = this.state
+    const {imagePreviewUrl} = this.state
     let $imagePreview = null
     if (imagePreviewUrl) {
       $imagePreview = (<Image src={imagePreviewUrl} className="image-preview" responsive />)
