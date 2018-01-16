@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const path = require('path')
 const bodyParser = require('body-parser')
 const image = require('./api/image')
+const user = require('./api/user')
 
 const app = express();
 
@@ -22,12 +23,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });
 
-app.use('/api/image', image)
+app.use('/api/images', image)
+app.use('/api/users', user)
 
-app.use(function(req, res, next) {
-    const err = new Error('Not Found')
-    err.status = 404;
-    next(err);
-});
+// app.use(function(req, res, next) {
+//     const err = new Error('Not Found')
+//     err.status = 404;
+//     next(err);
+// });
 
 module.exports = app;

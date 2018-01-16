@@ -17,7 +17,7 @@ class ImageUpload extends Component {
     e.preventDefault()
     const formData = new FormData()
     formData.append('image', this.state.file)
-    return fetch('http://localhost:3000/api/image/upload', {
+    return fetch('http://localhost:3000/api/images/upload', {
       method: 'POST',
       body: formData
     }).then(response => response.json())

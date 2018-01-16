@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const multer = require('multer')
 const request = require('request')
-const config = require('../config')
+const config = require('../config/config')
 
 const upload = multer()
 

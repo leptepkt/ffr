@@ -24,6 +24,15 @@ class Home extends Component {
 
   handleFbLogin(response) {
     if (response) {
+      fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(response)
+      }).then(res => res.json()).then(json => {
+        console.log(json)
+      })
       this.setState({username: response.name})
     }
     else {
