@@ -3,6 +3,7 @@ import './style.css'
 import ImageUpload from '../ImageUpload'
 import SearchResult from '../SearchResult'
 import FacebookLogin from 'react-facebook-login'
+import { Col, Grid, Row } from 'react-bootstrap'
 
 class Home extends Component {
   constructor (props) {
@@ -22,7 +23,6 @@ class Home extends Component {
   }
 
   handleFbLogin(response) {
-    console.log(response)
     if (response) {
       this.setState({username: response.name})
     }
@@ -35,16 +35,22 @@ class Home extends Component {
     if (this.state.username) {
       return (
         <div>
-          Welcome {this.state.username}
           <ImageUpload userSearch={this.state.userSearch} handleSearchResult={this.handleSearchResult}/>
           <SearchResult userSearch={this.state.userSearch}/>
         </div>
       )
     } else {
       return (
-        <FacebookLogin textButton="Continue with Facebook" icon="fa-facebook-official"
-                       appId="2006664906218812" autoLoad={true} fields="name,email,picture"
-                       callback={(response) => this.handleFbLogin(response)}/>
+        <Grid>
+          <Row className="show-grid">
+            <Col md={6} mdOffset={3}>
+              <FacebookLogin textButton="Continue with Facebook" icon="fa-facebook-official"
+                             appId="2006664906218812" autoLoad={true} fields="name, email"
+                             scope="public_profile, email, user_photos"
+                             callback={(response) => this.handleFbLogin(response)}/>
+            </Col>
+          </Row>
+        </Grid>
       )
     }
   }

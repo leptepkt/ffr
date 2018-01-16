@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './style.css'
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Grid, Image, Row } from 'react-bootstrap'
+import { Button, Col, Form, FormControl, FormGroup, Grid, Image, Row } from 'react-bootstrap'
 
 class ImageUpload extends Component {
   constructor (props) {
