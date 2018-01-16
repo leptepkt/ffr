@@ -1,5 +1,6 @@
 const config = {
   ms: {},
+  fb: {},
   app: {}
 }
 
