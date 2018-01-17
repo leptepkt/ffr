@@ -15,4 +15,7 @@ config.ms.personGroupId = 'ffr'
 config.ms.apiKey = '00a6d9e88d7547439c621af219e95d5f'
 config.ms.baseUrl = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 
+config.fb.appId = '2006664906218812'
+config.fb.appSecret = 'e5280e896f291d75080943782fd332b7'
+
 module.exports = config
