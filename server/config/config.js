@@ -17,5 +17,6 @@ config.ms.baseUrl = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0
 
 config.fb.appId = '2006664906218812'
 config.fb.appSecret = 'e5280e896f291d75080943782fd332b7'
+config.fb.baseUrl = 'https://graph.facebook.com/v2.11'
 
 module.exports = config

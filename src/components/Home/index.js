@@ -23,6 +23,7 @@ class Home extends Component {
   }
 
   handleFbLogin(response) {
+    console.log(response)
     if (response) {
       fetch('/api/users', {
         method: 'POST',
