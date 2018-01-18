@@ -42,7 +42,6 @@ image.detectFace = (data, type) => {
       'Ocp-Apim-Subscription-Key': config.ms.apiKey
     }
   }
-
   return new Promise(((resolve, reject) => {
     request.post(options, (error, response, body) => {
       if (error) {

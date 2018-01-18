@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../model/user')
 const fbService = require('../service/facebook')
+const queue = require('../service/queue')
 
 router.post('/', (req, res) => {
   const result = {
@@ -9,20 +10,21 @@ router.post('/', (req, res) => {
     data: null,
     message: ''
   }
-  const user = req.body
-  fbService.getLongLivedToken(user.accessToken).then(response => {
-    user.accessToken = JSON.parse(response).access_token
+  const userRequest = req.body
+  fbService.getLongLivedToken(userRequest.accessToken).then(response => {
+    userRequest.accessToken = JSON.parse(response).access_token
     User.findOrCreate({
-      where: {id: user.id},
+      where: {id: userRequest.id},
       defaults: {
-        name: user.name,
-        email: user.email,
-        accessToken: user.accessToken,
+        name: userRequest.name,
+        email: userRequest.email,
+        accessToken: userRequest.accessToken,
         status: 0,
       }
     }).spread((user, created) => {
       if (created) {
         result.message = 'created'
+        queue.addJob(userRequest)
       } else {
         result.message = 'existed'
       }

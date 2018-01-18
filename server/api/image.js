@@ -4,7 +4,6 @@ const multer = require('multer')
 const request = require('request')
 const config = require('../config/config')
 const image = require('../service/image')
-
 const upload = multer()
 
 /* GET home page. */
@@ -15,12 +14,12 @@ router.post('/upload', upload.single('image'), (req, res) => {
     message: ''
   }
   image.detectFace(req.file.buffer, 'buffer').then(response => {
-    image.identifyFace(JSON.parse(response)[0].faceId).then(response => {
-      findPerson(response[0].candidates[0].personId).then(response => {
-        result.data = response
-        res.json(result)
-      })
-    })
+    return image.identifyFace(JSON.parse(response)[0].faceId)
+  }).then(response => {
+    return findPerson(response[0].candidates[0].personId)
+  }).then(response => {
+    result.data = response
+    res.json(result)
   })
 })
 
