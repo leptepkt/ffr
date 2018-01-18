@@ -27,7 +27,7 @@ const dot = (u, v) => {
   return u.x * v.x + u.y * v.y
 }
 
-const detectFace = (data, type, cb) => {
+image.detectFace = (data, type) => {
   const options = {}
   options.url = `${config.ms.baseUrl}/detect`
   options.body = data
@@ -42,10 +42,38 @@ const detectFace = (data, type, cb) => {
       'Ocp-Apim-Subscription-Key': config.ms.apiKey
     }
   }
-  request.post(options, (error, response, body) => {
-    if (cb) {
-      cb(error, response, body)
-    }
+
+  return new Promise(((resolve, reject) => {
+    request.post(options, (error, response, body) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(body)
+    })
+  }))
+}
+
+image.identifyFace = (faceId) => {
+  const data = {
+    'personGroupId': config.ms.personGroupId,
+    'faceIds': [faceId],
+    'maxNumOfCandidatesReturned': 1,
+    'confidenceThreshold': 0.5
+  }
+  return new Promise((resolve, reject) => {
+    request({
+      url: `${config.ms.baseUrl}/identify`,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.ms.apiKey
+      },
+      json: data
+    }, (error, response, body) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(body)
+    })
   })
 }
 

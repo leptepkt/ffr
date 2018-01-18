@@ -10,10 +10,8 @@ router.post('/', (req, res) => {
     message: ''
   }
   const user = req.body
-  fbService.getLongLivedToken(user.accessToken, (error, response, body) => {
-    if (!error) {
-      user.accessToken = JSON.parse(body).access_token
-    }
+  fbService.getLongLivedToken(user.accessToken).then(response => {
+    user.accessToken = JSON.parse(response).access_token
     User.findOrCreate({
       where: {id: user.id},
       defaults: {
