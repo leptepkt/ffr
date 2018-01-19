@@ -1,10 +1,6 @@
-const config = require('../config/config')
 const Jimp = require('jimp')
-const request = require('request')
 
-const image = {}
-
-image.isPointInRectangle = (p, r) => {
+const isPointInRectangle = (p, r) => {
   const AB = vector(r.A, r.B)
   const AM = vector(r.A, p)
   const BC = vector(r.B, r.C)
@@ -27,11 +23,14 @@ const dot = (u, v) => {
   return u.x * v.x + u.y * v.y
 }
 
-image.cropUser = (imageUrl) => {
-  const data = `{"url": "${imageUrl}"}`
-  detectFace(data, 'url', (error, response, body) => {
-
-  })
+const getRealIndex = (xPercent, yPercent, height, width) => {
+  return {
+    x: xPercent * width / 100,
+    y: yPercent * height / 100
+  }
 }
 
-module.exports = image
+module.exports = {
+  isPointInRectangle: isPointInRectangle,
+  getRealIndex: getRealIndex
+}

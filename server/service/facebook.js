@@ -17,7 +17,8 @@ const getLongLivedToken = (accessToken) => {
 
 const getTaggedPhoto = (userId, accessToken) => {
   // add limit param for more photos
-  const url = `${config.fb.baseUrl}/${userId}/photos?fields=tags,images&access_token=${accessToken}`
+  // FIXME: remove limit=2
+  const url = `${config.fb.baseUrl}/${userId}/photos?fields=tags,images&access_token=${accessToken}&limit=2`
   return new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
       if (error) {
