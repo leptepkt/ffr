@@ -14,6 +14,7 @@ const addJob = (data) => {
   //TODO: do we need to schedule execution?
   queue.process('crawlUserImage', (job, done) => {
     fb.getTaggedPhoto(job.data.id, job.data.accessToken).then(response => {
+      console.log(JSON.parse(response).data[0].images[0].source)
       done()
     })
   })

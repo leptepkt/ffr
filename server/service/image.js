@@ -27,55 +27,6 @@ const dot = (u, v) => {
   return u.x * v.x + u.y * v.y
 }
 
-image.detectFace = (data, type) => {
-  const options = {}
-  options.url = `${config.ms.baseUrl}/detect`
-  options.body = data
-  if (type === 'buffer') {
-    options.headers = {
-      'Content-Type': 'application/octet-stream',
-      'Ocp-Apim-Subscription-Key': config.ms.apiKey
-    }
-  } else {
-    options.headers = {
-      'Content-Type': 'application/json',
-      'Ocp-Apim-Subscription-Key': config.ms.apiKey
-    }
-  }
-  return new Promise(((resolve, reject) => {
-    request.post(options, (error, response, body) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(body)
-    })
-  }))
-}
-
-image.identifyFace = (faceId) => {
-  const data = {
-    'personGroupId': config.ms.personGroupId,
-    'faceIds': [faceId],
-    'maxNumOfCandidatesReturned': 1,
-    'confidenceThreshold': 0.5
-  }
-  return new Promise((resolve, reject) => {
-    request({
-      url: `${config.ms.baseUrl}/identify`,
-      method: 'POST',
-      headers: {
-        'Ocp-Apim-Subscription-Key': config.ms.apiKey
-      },
-      json: data
-    }, (error, response, body) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(body)
-    })
-  })
-}
-
 image.cropUser = (imageUrl) => {
   const data = `{"url": "${imageUrl}"}`
   detectFace(data, 'url', (error, response, body) => {
