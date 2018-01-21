@@ -30,7 +30,7 @@ const addJob = (data) => {
         // Detect which one is user face base on real index
         const msData = `{"url": "${taggedImage.images[0].source}"}`
         ms.detectFace(msData, 'url').then(response => {
-          for (const face of response) {
+          for (const face of JSON.parse(response)) {
             const rectangle = {
               A: {
                 x: face.faceRectangle.left,
@@ -42,18 +42,19 @@ const addJob = (data) => {
               },
               C: {
                 x: face.faceRectangle.left + face.faceRectangle.width,
-                y: face.faceRectangle.top - face.faceRectangle.height
+                y: face.faceRectangle.top + face.faceRectangle.height
               },
               D: {
                 x: face.faceRectangle.left,
-                y: face.faceRectangle.top - face.faceRectangle.height
+                y: face.faceRectangle.top + face.faceRectangle.height
               },
             }
-            if (image.isPointInRectangle(index, rectangle)) {
+            if (image.isPointInRectangle(index, rectangle)) { // check if this face is correct face or not
               //TODO: crop image and upload
+              image.cropImage(taggedImage.images[0].source, face.faceRectangle.left - 50, face.faceRectangle.top - 50,
+                face.faceRectangle.width + 100, face.faceRectangle.height + 100)
             }
           }
-          console.log(response)
         })
       }
       done()

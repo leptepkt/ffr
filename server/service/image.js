@@ -30,7 +30,29 @@ const getRealIndex = (xPercent, yPercent, height, width) => {
   }
 }
 
+const cropImage = (url, x, y, w, h) => {
+  return new Promise((resolve, reject) => {
+    Jimp.read(url, function (err, image) {
+      if (err) {
+        reject(err)
+      }
+      // resolve(image.crop(x, y, w, h, (image) => {
+      //   //TODO: remove below test function
+      //   test(image, url)
+      // }))
+      const image2 = image.crop(x, y, w, h)
+      test(image2, url)
+    })
+  })
+}
+
+const test = (image, url) => {
+  const file = `D:\\${url.substring(url.length, url.length-5)}.${image.getExtension()}`
+  image.write(file)
+}
+
 module.exports = {
   isPointInRectangle: isPointInRectangle,
-  getRealIndex: getRealIndex
+  getRealIndex: getRealIndex,
+  cropImage: cropImage
 }
