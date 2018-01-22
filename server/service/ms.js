@@ -101,12 +101,14 @@ const addPersonFace = (personId, data, type) => {
     }
   }
   return new Promise((resolve, reject) => {
-    request.post(options, (error, response, body) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(body)
-    })
+    setTimeout(() => {
+      request.post(options, (error, response, body) => {
+        if (error) {
+          reject(error)
+        }
+        resolve(body)
+      })
+    }, 5 * 1000)
   })
 }
 

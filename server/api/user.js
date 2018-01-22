@@ -14,24 +14,31 @@ router.post('/', (req, res) => {
   const userRequest = req.body
   fbService.getLongLivedToken(userRequest.accessToken).then(response => {
     userRequest.accessToken = JSON.parse(response).access_token
-    User.findOrCreate({
-      where: {id: userRequest.id},
-      defaults: {
-        name: userRequest.name,
-        email: userRequest.email,
-        accessToken: userRequest.accessToken,
-        status: 0,
-      }
-    }).spread((user, created) => {
-      if (created) {
-        result.message = 'created'
-        ms.createPerson(userRequest.name, userRequest.id).then(response => {
-          queue.addJob(userRequest)
-        })
-      } else {
+    User.findById(userRequest.id).then(user => {
+      if (user) { // User existed -> Update access token
+        //TODO: update token
         result.message = 'existed'
+        res.json(result)
+      } else {
+        ms.createPerson(userRequest.name, userRequest.id).then(response => {
+          User.create({
+            id: userRequest.id,
+            name: userRequest.name,
+            email: userRequest.email,
+            accessToken: userRequest.accessToken,
+            status: 0,
+            msId: JSON.parse(response).personId
+          }).then(createdUser => {
+            queue.addJob(createdUser)
+            result.message = 'created'
+            res.json(result)
+          })
+        }).catch(error => {
+          console.log(error)
+          result.status = -1
+          res.json(result)
+        })
       }
-      res.json(result)
     })
   })
 })

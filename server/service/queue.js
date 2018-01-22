@@ -55,7 +55,10 @@ const addJob = (data) => {
               image.cropImage(taggedImage.images[0].source, face.faceRectangle.left - 20, face.faceRectangle.top - 20,
                 face.faceRectangle.width + 40, face.faceRectangle.height + 40)
                 .then(image => {
-                  // ms.addPersonFace()
+                  ms.addPersonFace(job.data.msId, image.buffer, 'buffer')
+                    .catch(error => {
+                      console.log(error)
+                    })
                 })
               break
             }

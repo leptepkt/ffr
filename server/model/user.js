@@ -12,7 +12,11 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     field: 'access_token'
   },
-  status: Sequelize.INTEGER
+  status: Sequelize.INTEGER,
+  msId: {
+    type: Sequelize.STRING,
+    field: 'ms_id'
+  }
 })
 
 User.sync()
