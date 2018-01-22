@@ -34,21 +34,14 @@ const cropImage = (url, x, y, w, h) => {
   return new Promise((resolve, reject) => {
     Jimp.read(url, function (err, image) {
       if (err) {
+        console.log('Error ', url)
         reject(err)
       }
-      // resolve(image.crop(x, y, w, h, (image) => {
-      //   //TODO: remove below test function
-      //   test(image, url)
-      // }))
-      const image2 = image.crop(x, y, w, h)
-      test(image2, url)
+      //TODO: remove below test function
+      const file = `/home/anhnguyen/trunk/${url.substring(url.length, url.length-7)}.${image.getExtension()}`
+      resolve(image.crop(x, y, w, h))
     })
   })
-}
-
-const test = (image, url) => {
-  const file = `D:\\${url.substring(url.length, url.length-5)}.${image.getExtension()}`
-  image.write(file)
 }
 
 module.exports = {

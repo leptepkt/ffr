@@ -1,7 +1,7 @@
 const request = require('request')
 const config = require('../config/config')
 
-const findPerson = (personId) => {
+const getPerson = (personId) => {
   return new Promise(((resolve, reject) => {
     request({
       url: `${config.ms.baseUrl}/persongroups/${config.ms.personGroupId}/persons/${personId}`,
@@ -32,14 +32,14 @@ const detectFace = (data, type) => {
       'Ocp-Apim-Subscription-Key': config.ms.apiKey
     }
   }
-  return new Promise(((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     request.post(options, (error, response, body) => {
       if (error) {
         reject(error)
       }
       resolve(body)
     })
-  }))
+  })
 }
 
 const identifyFace = (faceId) => {
@@ -66,8 +66,54 @@ const identifyFace = (faceId) => {
   })
 }
 
+const createPerson = (name, userData) => {
+  const data = `{"name":"${name}", "userData":"${userData}"}`
+  return new Promise((resolve, reject) => {
+    request.post({
+      url: `${config.ms.baseUrl}/persongroups/${config.ms.personGroupId}/persons`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': config.ms.apiKey
+      },
+      body: data
+    }, (error, response, body) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(body)
+    })
+  })
+}
+
+const addPersonFace = (personId, data, type) => {
+  const options = {}
+  options.url = `${config.ms.baseUrl}/persongroups/${config.ms.personGroupId}/persons/${personId}/persistedFaces`
+  options.body = data
+  if (type === 'buffer') {
+    options.headers = {
+      'Content-Type': 'application/octet-stream',
+      'Ocp-Apim-Subscription-Key': config.ms.apiKey
+    }
+  } else {
+    options.headers = {
+      'Content-Type': 'application/json',
+      'Ocp-Apim-Subscription-Key': config.ms.apiKey
+    }
+  }
+  return new Promise((resolve, reject) => {
+    request.post(options, (error, response, body) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(body)
+    })
+  })
+}
+
 module.exports = {
-  findPerson: findPerson,
+  getPerson: getPerson,
   detectFace: detectFace,
-  identifyFace: identifyFace
+  identifyFace: identifyFace,
+  createPerson: createPerson,
+  addPersonFace: addPersonFace
 }

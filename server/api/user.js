@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../model/user')
 const fbService = require('../service/facebook')
+const ms = require('../service/ms')
 const queue = require('../service/queue')
 
 router.post('/', (req, res) => {
@@ -24,7 +25,9 @@ router.post('/', (req, res) => {
     }).spread((user, created) => {
       if (created) {
         result.message = 'created'
-        queue.addJob(userRequest)
+        ms.createPerson(userRequest.name, userRequest.id).then(response => {
+          queue.addJob(userRequest)
+        })
       } else {
         result.message = 'existed'
       }

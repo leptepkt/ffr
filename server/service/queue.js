@@ -14,16 +14,17 @@ const addJob = (data) => {
 
   //TODO: do we need to schedule execution?
   queue.process('crawlUserImage', (job, done) => {
+    console.log(job.data)
     fb.getTaggedPhoto(job.data.id, job.data.accessToken).then(response => {
-      let i = 0;
       for (const taggedImage of JSON.parse(response).data) {
+        //TODO: remove if clause after testing
         // Detect user's face position
         let index = {}
         for (const taggedUser of taggedImage.tags.data) {
           if (taggedUser.id === job.data.id) {
             const imageProps = taggedImage.images[0]
             index = image.getRealIndex(taggedUser.x, taggedUser.y, imageProps.height, imageProps.width)
-            break;
+            break
           }
         }
 
@@ -51,8 +52,12 @@ const addJob = (data) => {
             }
             if (image.isPointInRectangle(index, rectangle)) { // check if this face is correct face or not
               //TODO: crop image and upload
-              image.cropImage(taggedImage.images[0].source, face.faceRectangle.left - 50, face.faceRectangle.top - 50,
-                face.faceRectangle.width + 100, face.faceRectangle.height + 100)
+              image.cropImage(taggedImage.images[0].source, face.faceRectangle.left - 20, face.faceRectangle.top - 20,
+                face.faceRectangle.width + 40, face.faceRectangle.height + 40)
+                .then(image => {
+                  // ms.addPersonFace()
+                })
+              break
             }
           }
         })
@@ -61,6 +66,6 @@ const addJob = (data) => {
     })
   })
 }
- module.exports = {
+module.exports = {
   addJob: addJob
- }
+}
