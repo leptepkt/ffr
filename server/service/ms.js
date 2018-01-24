@@ -101,14 +101,13 @@ const addPersonFace = (personId, data, type) => {
     }
   }
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      request.post(options, (error, response, body) => {
-        if (error) {
-          reject(error)
-        }
-        resolve(body)
-      })
-    }, 5 * 1000)
+    console.log('upload image ' + personId + ' : ' + options.url)
+    request.post(options, (error, response, body) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(body)
+    })
   })
 }
 
